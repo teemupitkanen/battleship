@@ -1,3 +1,3 @@
 ﻿Tuntikirjanpito:
 
-Ti 12.3.		2h 		Aloitusluento, Githubin opettelua
+Ti 12.3.		2h 		Aloitusluento, Githubin opettelua, ensimmäisten harjoitusten tekeminen
