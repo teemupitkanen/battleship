@@ -1,3 +1,4 @@
 ﻿Tuntikirjanpito:
 
 Ti 12.3.		2h 		Aloitusluento, Githubin opettelua, ensimmäisten harjoitusten tekeminen
+To 14.3.          Alustavat määrittelyvaiheen luokkakaavio, sekvenssikaavio ja koodaamisen aloittelua
