@@ -2,3 +2,4 @@
 
 Ti 12.3.    2h    Aloitusluento, Githubin opettelua, ensimmäisten harjoitusten tekeminen
 To 14.3.    3h    Alustavat määrittelyvaiheen luokkakaavio, sekvenssikaavio ja koodaamisen aloittelua, ensimmäiset testit
+Ti 19.3.    3h    Pelin loogisten luokkien täydentelyä
