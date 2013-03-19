@@ -1,13 +1,14 @@
 
 
+import logiikka.Pelilauta;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 
-public class pelilautatest {
+public class Pelilautatest {
 
-    public pelilautatest() {
+    public Pelilautatest() {
     }
     Pelilauta lauta;
 

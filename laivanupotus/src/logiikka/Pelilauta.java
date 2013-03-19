@@ -33,6 +33,9 @@ public class Pelilauta {
         for (int j = alkux; j <= loppux; j++) {
             lauta[alkuy][j].setTila("laiva");
         }
+        
+        Laiva laiva=new Laiva((loppuy-alkuy)+(loppux-alkux)+1);  // HUOM TALLENNETTAVA VIELA JOHONKIN
+        
         return true;
     }
     
@@ -109,6 +112,10 @@ public class Pelilauta {
 
     public Ruutu[][] getLauta() {
         return lauta;
+    }
+    
+    public Ruutu getRuutu(int x, int y){
+        return lauta[y][x];
     }
 }
 

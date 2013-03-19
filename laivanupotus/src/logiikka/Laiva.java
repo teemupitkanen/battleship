@@ -1,14 +1,20 @@
 package logiikka;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author teempitk
- */
 public class Laiva {
-    
+
+    private int koko;
+    private int jaljella;
+
+    public Laiva(int pituus) {
+        koko=pituus;
+    }
+
+    public boolean onkoUponnut() {
+        if (jaljella == 0) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
 }
