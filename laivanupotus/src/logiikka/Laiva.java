@@ -10,11 +10,15 @@ public class Laiva {
     }
 
     public boolean onkoUponnut() {
-        if (jaljella == 0) {
+        if (jaljella < 1) {
             return true;
 
         } else {
             return false;
         }
     }
+    public void osuma(){
+        jaljella--;
+    }
+    
 }

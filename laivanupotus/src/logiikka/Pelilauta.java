@@ -26,15 +26,17 @@ public class Pelilauta {
         alkuy=jarjestys[1];
         loppux=jarjestys[2];
         loppuy=jarjestys[3];
+        
+        Laiva laiva=new Laiva((loppuy-alkuy)+(loppux-alkux)+1);
 
         for (int i = alkuy; i <= loppuy; i++) {         // Jos sijainti sopii, asetetaan laiva.
             lauta[i][alkux].setTila("laiva");
+            lauta[i][alkux].setLaiva(laiva);
         }
         for (int j = alkux; j <= loppux; j++) {
             lauta[alkuy][j].setTila("laiva");
+            lauta[alkuy][j].setLaiva(laiva);
         }
-        
-        Laiva laiva=new Laiva((loppuy-alkuy)+(loppux-alkux)+1);  // HUOM TALLENNETTAVA VIELA JOHONKIN
         
         return true;
     }
@@ -114,8 +116,5 @@ public class Pelilauta {
         return lauta;
     }
     
-    public Ruutu getRuutu(int x, int y){
-        return lauta[y][x];
-    }
 }
 

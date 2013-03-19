@@ -2,10 +2,11 @@ package logiikka;
 
 public class Peli {
     private static Pelaaja pelaaja;
+    private static Tietokonevastustaja vastus;
 
     public static void main(String[] args) {
         pelaaja = new Pelaaja();
-        Tietokonevastustaja vastus = new Tietokonevastustaja();
+        vastus = new Tietokonevastustaja();
 
         while (true) {
             while (true) {
@@ -15,7 +16,7 @@ public class Peli {
             }
             if (pvoittaa()) {                   // LISATTAVA! TARKISTETTAVA VOITTO USEIDEN OSUMIEN VALILLA!
                 System.out.println("Sinä voitit!");
-
+                break;
             }
             while (true) {
                 if (!vastus.pelaa()) {
@@ -42,6 +43,13 @@ public class Peli {
 
     
     private static boolean pvoittaa() {
-        return true;
+        Laiva[] laivat=vastus.getLaivat();
+        boolean testi=true;
+        for(Laiva laiva:laivat){
+            if(!laiva.onkoUponnut()){
+                testi=false;
+            }
+        }
+        return testi;
     }
 }

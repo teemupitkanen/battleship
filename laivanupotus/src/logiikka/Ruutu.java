@@ -3,8 +3,6 @@ package logiikka;
 public class Ruutu {
 
     private String tila;
-    private int x;
-    private int y;
     private Laiva laiva;
 
     public Ruutu() {
