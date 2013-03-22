@@ -15,6 +15,8 @@ import logiikka.Peli;
 
 public class Laivanupotus extends JFrame {
 
+    private int apux;
+    private int apuy;
     private int alkux;
     private int alkuy;
     private int loppux;
@@ -70,9 +72,19 @@ public class Laivanupotus extends JFrame {
         }
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                alkux = j;
-                alkuy = i;
+                apux = j;
+                apuy = i;
                 Nappi nappi = pelaajan[10 * i + j];
+                nappi.addActionListener(
+                        new Kuuntelija(j, i, this));
+            }
+        }
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                apux = j;
+                apuy = i;
+                Nappi nappi = vastustajan[10 * i + j];
                 nappi.addActionListener(
                         new Kuuntelija(j, i, this));
             }
@@ -117,25 +129,79 @@ public class Laivanupotus extends JFrame {
         } else {
             loppux = x;
             loppuy = y;
-            if (asetettavanPituus == 2 || asetettavanPituus == 4 || asetettavanPituus == 5) {
-                asetettavanPituus--;                                                                // JATKA TASTA!!!!
-            }                                                                                       // TARKISTETTAVA VOIKO ASETTAA
+
+            int apu;
+            if (alkux > loppux) {
+                apu = alkux;
+                alkux = loppux;
+                loppux = apu;
+            }
+            if (alkuy > loppuy) {
+                apu = alkuy;
+                alkuy = loppuy;
+                loppuy = apu;
+            }
+            if (alkuy == loppuy && loppux - alkux + 1 == asetettavanPituus || (alkux == loppux && loppuy - alkuy + 1 == asetettavanPituus)) {
+                if (peli.getPelaaja().asetaLaiva(alkux, alkuy, loppux, loppuy)) {     // Merkitään ruudussa hyväksytyn laivan pisteet X:llä
+
+                    for (int i = alkux; i <= loppux; i++) {
+                        pelaajan[10 * alkuy + i].setText("X");
+                    }
+                    for (int i = alkuy; i <= loppuy; i++) {
+                        pelaajan[10 * i + alkux].setText("X");
+                    }
+
+                    if (asetettavanPituus == 5) {
+                        asetettavanPituus--;
+                        edellisenPituus = 5;
+                    } else if (asetettavanPituus == 4) {
+                        asetettavanPituus--;
+                        edellisenPituus--;
+                    } else if (asetettavanPituus == 3) {
+                        if (edellisenPituus == 3) {
+                            asetettavanPituus--;
+                        } else {
+                            edellisenPituus--;
+                        }
+                    } else {
+                        asetettavanPituus = 0;
+                        ammuntavaihe = true;
+
+                    }
+                }else {
+                pelaajan[10 * alkuy + alkux].setText("");
+                pelaajan[10 * loppuy + loppux].setText("");
+
+            }
+            } else {
+                pelaajan[10 * alkuy + alkux].setText("");
+                pelaajan[10 * loppuy + loppux].setText("");
+
+            }
+            t12.setText("Aseta laivan (" + asetettavanPituus + ") alkupiste");
+            if (asetettavanPituus == 0) {
+                t12.setText("Asetteluvaihe on loppunut. Ammu oikeanpuoleiseen ruudukkoon");
+                naytaLaudat();
+            }
         }
 
 
     }
 
     public void ammu(int x, int y) {
+        String tulos = Peli.getVastus().getRuudunTila(x, y);
+        if (tulos.equals("laiva")) {
+            vastustajan[10 * y + x].setText("X");
+            if (Peli.getVastus().getLauta().getLauta()[y][x].getLaiva().onkoUponnut()) { //Ei toimi viela, koska ampumien ei päivitä sisäisiä tietorakenteita
+                vastustajan[10 * y + x].setText("#");
+            }
+        } else if (tulos.equals("tyhja")) {
+            vastustajan[10 * y + x].setText("-");
+        }
     }
 
     public boolean onkoAmmuntavaihe() {
         return ammuntavaihe;
-    }
-
-    public void asetaOmaOhje() {
-    }
-
-    public void asetaVastustajanOhje() {
     }
 
     public static void main(String args[]) {
@@ -145,5 +211,32 @@ public class Laivanupotus extends JFrame {
         ikkuna.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ikkuna.setSize(1000, 500);
         ikkuna.setVisible(true);
+    }
+
+    private static void naytaLaudat() {
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (Peli.getPelaaja().getRuudunTila(j, i).equals("laiva")) {
+                    System.out.print("#");
+
+                } else {
+                    System.out.print(".");
+                }
+            }
+            System.out.println("");
+        }
+        System.out.println("");
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (Peli.getVastus().getRuudunTila(j, i).equals("laiva")) {
+                    System.out.print("#");
+
+                } else {
+                    System.out.print(".");
+                }
+            }
+            System.out.println("");
+        }
     }
 }

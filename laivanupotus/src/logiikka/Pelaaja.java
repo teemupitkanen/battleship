@@ -30,8 +30,8 @@ public class Pelaaja {
         }
     }
 
-    public void asetaLaiva(int alkux, int alkuy, int loppux, int loppuy) {
-        lauta.asetaLaiva(alkux, alkuy, loppux, loppuy);
+    public boolean asetaLaiva(int alkux, int alkuy, int loppux, int loppuy) {
+        return(lauta.asetaLaiva(alkux, alkuy, loppux, loppuy));
     }
 
     public Laiva[] getLaivat() {

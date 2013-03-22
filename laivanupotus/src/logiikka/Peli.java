@@ -33,11 +33,11 @@ public class Peli {
         return testi;
     }
     
-    public Pelaaja getPelaaja(){
+    public static Pelaaja getPelaaja(){
         return pelaaja;
     }
     
-    public Tietokonevastustaja getVastus(){
+    public static Tietokonevastustaja getVastus(){
         return vastus;
     }
 //    private static void pelaa() {
