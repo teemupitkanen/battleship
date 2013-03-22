@@ -12,13 +12,10 @@ public class Ruutu {
     public String getTila() {
         return tila;
     }
-
-    public void setTila(String tila) {
-        this.tila = tila;
-    }
     
     public void setLaiva(Laiva laiva){
         this.laiva=laiva;
+        tila="laiva";
     }
     
     public Laiva getLaiva(){

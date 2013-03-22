@@ -5,7 +5,7 @@ import logiikka.Ruutu;
 
 public class Pelilauta {
 
-    private static Ruutu[][] lauta;
+    private Ruutu[][] lauta;
 
     public Pelilauta() {
         lauta = new Ruutu[10][10];
@@ -16,7 +16,7 @@ public class Pelilauta {
         }
     }
 
-    public static boolean asetaLaiva(int alkux, int alkuy, int loppux, int loppuy) {
+    public boolean asetaLaiva(int alkux, int alkuy, int loppux, int loppuy) {
         if (voikoAsettaa(alkux, alkuy, loppux, loppuy) == false) {
             return false;
         }
@@ -30,15 +30,17 @@ public class Pelilauta {
         Laiva laiva=new Laiva((loppuy-alkuy)+(loppux-alkux)+1);
 
         for (int i = alkuy; i <= loppuy; i++) {         // Jos sijainti sopii, asetetaan laiva.
-            lauta[i][alkux].setTila("laiva");
             lauta[i][alkux].setLaiva(laiva);
         }
         for (int j = alkux; j <= loppux; j++) {
-            lauta[alkuy][j].setTila("laiva");
             lauta[alkuy][j].setLaiva(laiva);
         }
         
         return true;
+    }
+    
+    public Ruutu[][] getLauta() {
+        return lauta;
     }
     
     public static int[] jarjestaKoordinaatit(int alkux, int alkuy, int loppux, int loppuy) {
@@ -63,7 +65,7 @@ public class Pelilauta {
         return jarjestyksessa;
     }
         
-    public static boolean voikoAsettaa(int alkux, int alkuy, int loppux, int loppuy) {
+    public boolean voikoAsettaa(int alkux, int alkuy, int loppux, int loppuy) {
         if (alkux < 0 || alkuy < 0 || loppux < 0 || loppuy < 0 || alkux > 9 || alkuy > 9 || loppux > 9 || loppuy > 9) {
             return false;       // jos indeksit eivät osu laudalle
         }
@@ -112,9 +114,6 @@ public class Pelilauta {
         return true;
     }
 
-    public Ruutu[][] getLauta() {
-        return lauta;
-    }
     
 }
 

@@ -1,9 +1,12 @@
 package logiikka;
+import java.util.ArrayList;
 
 public class Tietokonevastustaja {
 
     private Pelilauta lauta;
     private Laiva[] laivat;
+    private ArrayList<Integer> viimeisetNelja;
+    private int[][] kohdelauta;  // 0=ei ammuttu, 1=ohi, 2=osui, 3=uponnut
 
     public Tietokonevastustaja() {
         lauta = new Pelilauta();
@@ -13,6 +16,13 @@ public class Tietokonevastustaja {
         laivat[2] = asetaLaiva(3);
         laivat[3] = asetaLaiva(3);
         laivat[4] = asetaLaiva(2);
+        viimeisetNelja=new ArrayList<>();
+        kohdelauta = new int[10][10];
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                kohdelauta[i][j] = 0;
+            }
+        }
 
     }
 
@@ -61,5 +71,11 @@ public class Tietokonevastustaja {
 
     public Laiva[] getLaivat() {
         return laivat;
+    }
+    public Pelilauta getLauta(){
+        return lauta;
+    }
+    public String getRuudunTila(int x, int y){
+        return lauta.getLauta()[y][x].getTila();
     }
 }

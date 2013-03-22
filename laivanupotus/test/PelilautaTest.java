@@ -6,9 +6,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 
-public class Pelilautatest {
+public class PelilautaTest {
 
-    public Pelilautatest() {
+    public PelilautaTest() {
     }
     Pelilauta lauta;
 

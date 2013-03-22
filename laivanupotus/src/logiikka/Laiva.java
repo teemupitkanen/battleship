@@ -7,10 +7,11 @@ public class Laiva {
 
     public Laiva(int pituus) {
         koko=pituus;
+        jaljella=koko;
     }
 
     public boolean onkoUponnut() {
-        if (jaljella < 1) {
+        if (jaljella==0) {
             return true;
 
         } else {

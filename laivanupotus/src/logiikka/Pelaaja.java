@@ -4,24 +4,44 @@ public class Pelaaja {
 
     private Pelilauta lauta;
     private Laiva[] laivat;
+    private int[][] kohdelauta;  // 0=ei ammuttu, 1=ohi, 2=osui, 3=uponnut
 
     public Pelaaja() {
         lauta = new Pelilauta();
-        laivat=new Laiva[5];
-        laivat[0]=asetaLaiva(5);
-        laivat[1]=asetaLaiva(4);
-        laivat[2]=asetaLaiva(3);
-        laivat[3]=asetaLaiva(3);
-        laivat[4]=asetaLaiva(2);
+        laivat = new Laiva[5];
+        kohdelauta = new int[10][10];
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                kohdelauta[i][j] = 0;
+            }
+        }
+    }
 
+    public void ammu(int x, int y, int tulos) {
+        kohdelauta[y][x] = tulos;
     }
-    public boolean pelaa(){
-        return true;
+
+    public boolean onkoAmmuttu(int x, int y) {
+        if (kohdelauta[y][x] == 0) {
+            return false;
+                    
+        } else {
+            return true;
+        }
     }
-    public Laiva asetaLaiva(int pituus){
-        return new Laiva(3);                      /////////KORJAA!
+
+    public void asetaLaiva(int alkux, int alkuy, int loppux, int loppuy) {
+        lauta.asetaLaiva(alkux, alkuy, loppux, loppuy);
     }
-    public Laiva[] getLaivat(){
+
+    public Laiva[] getLaivat() {
         return laivat;
+    }
+
+    public Pelilauta getLauta() {
+        return lauta;
+    }
+    public String getRuudunTila(int x, int y){
+        return lauta.getLauta()[y][x].getTila();
     }
 }
