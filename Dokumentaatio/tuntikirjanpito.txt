@@ -6,3 +6,4 @@ Ti 19.3.    3h    Pelin loogisten luokkien täydentelyä
 Ke 20.3.    1h    Graafisen käyttöliittymän hahmottelua, alustava toteutus
 To 21.3.    2,5h  Testejä luokille laiva, ruutu, vastustaja. Käyttöliittymän rakentelua
 Pe 22.3.    4h    Käyttölittymän rakentelua, laivat saa nyt sijoitettua ja avstustajan laivoja "ammuttua". Apuminen ei vielä päivitä tietoja käyttöliittymästä itse rakenteisiin.
+Ma 25.3.    2h    Korjauksia käyttöliittymään. Lisätty ilmoitus voitosta kun laivat upotettu. Refaktorointia. Luokkakaavioon täydennyksiä.

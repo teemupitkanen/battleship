@@ -26,7 +26,7 @@ public class Tietokonevastustaja {
 
     }
 
-    public boolean pelaa() {
+    public boolean ammu() {
         return true;
     }
 

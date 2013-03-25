@@ -11,7 +11,7 @@ public class Peli {
     }
 
 
-    private static boolean vvoittaa() {
+    public boolean vvoittaa() {
         Laiva[] laivat = pelaaja.getLaivat();
         boolean testi = true;
         for (Laiva laiva : laivat) {
@@ -22,7 +22,7 @@ public class Peli {
         return testi;
     }
 
-    private static boolean pvoittaa() {
+    public boolean pvoittaa() {
         Laiva[] laivat = vastus.getLaivat();
         boolean testi = true;
         for (Laiva laiva : laivat) {

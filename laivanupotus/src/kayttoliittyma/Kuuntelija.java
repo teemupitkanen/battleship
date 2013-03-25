@@ -16,19 +16,25 @@ public class Kuuntelija implements ActionListener {
     private int x;
     private int y;
     private Laivanupotus upotus;
+    private boolean asettaaVaiAmpuu;  // false=asettaa, true=ampuu
 
-    public Kuuntelija(int x, int y, Laivanupotus upotus) {
+    public Kuuntelija(int x, int y, Laivanupotus upotus, boolean ampuuko) {
         this.x = x;
         this.y = y;
         this.upotus = upotus;
+        asettaaVaiAmpuu = ampuuko;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!upotus.onkoAmmuntavaihe()) {
-            upotus.aseta(x,y);
+            if (!asettaaVaiAmpuu) {
+                upotus.aseta(x, y);
+            }
         } else {
-            upotus.ammu(x,y);
+            if (asettaaVaiAmpuu) {
+                upotus.ammu(x, y);
+            }
         }
 
     }
