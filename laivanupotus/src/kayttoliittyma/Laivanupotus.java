@@ -215,25 +215,28 @@ public class Laivanupotus extends JFrame {
         // vastustaja ampuu
 
         int[] ammuttavanKoordinaatit = peli.getVastus().ammu();
-        int ax=ammuttavanKoordinaatit[0];
-        int ay=ammuttavanKoordinaatit[1];
+        int ax = ammuttavanKoordinaatit[0];
+        int ay = ammuttavanKoordinaatit[1];
         System.out.println(ax);
         System.out.println(ay);  //
         String vihollisenTulos = Peli.getPelaaja().getRuudunTila(ax, ay);
         if (vihollisenTulos.equals("laiva")) {
+            Peli.getPelaaja().getLauta().getLauta()[ay][ax].getLaiva().osuma();
             pelaajan[10 * ay + ax].setText("#");
             if (!Peli.getPelaaja().getLauta().getLauta()[ay][ax].getLaiva().onkoUponnut()) {
                 peli.getVastus().asetaTulos(2, ax, ay);
             } else {
+                System.out.println("UPPOSI");
                 peli.getVastus().asetaTulos(3, ax, ay);
             }
         } else {
             pelaajan[10 * ay + ax].setVisible(false);
             peli.getVastus().asetaTulos(1, ax, ay);
         }
+        if(peli.vvoittaa()){
+            t12.setText("Tietokone voitti!");
         }
-
-    
+    }
 
     public boolean onkoAmmuntavaihe() {
         return ammuntavaihe;

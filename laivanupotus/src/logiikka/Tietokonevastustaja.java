@@ -12,6 +12,11 @@ public class Tietokonevastustaja {
     private int[][] kohdelauta;  // 0=ei ammuttu, 1=ohi, 2=osui, 3=uponnut
     private ArrayList<Integer> ammuttavanx;
     private ArrayList<Integer> ammuttavany;
+    private boolean upotusKesken;
+    private boolean suuntaTiedossa;
+    private boolean upotettavaVaaka;
+    private int viimeksiOsunutX;
+    private int viimeksiOsunutY;
 
     public Tietokonevastustaja() {
         lauta = new Pelilauta();
@@ -30,12 +35,100 @@ public class Tietokonevastustaja {
                 kohdelauta[i][j] = 0;
             }
         }
+        upotusKesken = false;
+        suuntaTiedossa = false;
+        upotettavaVaaka = false;
 
     }
 
     public int[] ammu() {
         ammuttavanx = new ArrayList();
         ammuttavany = new ArrayList();
+
+
+        if (upotusKesken) {
+
+
+            if (suuntaTiedossa) {
+                if (upotettavaVaaka) {
+                    int oikeax=viimeksiOsunutX;
+                    int vasenx=viimeksiOsunutX;
+                    
+                    while(kohdelauta[viimeksiOsunutY][oikeax]==2 && oikeax<=9){
+                        oikeax++;
+                    }while(kohdelauta[viimeksiOsunutY][vasenx]==2 && vasenx>=0){
+                        vasenx--;
+                    }
+                    oikeax--;
+                    vasenx++;
+                    
+                    Double kumpiPaa=Math.random();
+                    if(oikeax==9 || (kumpiPaa<0.5 && vasenx-1>=0 && kohdelauta[viimeksiOsunutY][vasenx-1]==0)){   // ammutaan vasempaan paahan
+                        int[] palautettava={vasenx-1,viimeksiOsunutY};
+                        return palautettava;
+                    }
+                    else if (kumpiPaa>0.5 && oikeax+1<=9 && kohdelauta[viimeksiOsunutY][oikeax+1]==0){               // ammutaan oikeaan paahan
+                        int[] palautettava={vasenx-1,viimeksiOsunutY};
+                        return palautettava;
+                    }
+                }
+                else{
+                    int ylay=viimeksiOsunutY;
+                    int alay=viimeksiOsunutY;
+                    
+                    while(kohdelauta[ylay][viimeksiOsunutX]==2 && ylay<=9){
+                        ylay++;
+                    }while(kohdelauta[alay][viimeksiOsunutX]==2 && alay>=0){
+                        alay--;
+                    }
+                    ylay--;
+                    alay++;
+                    
+                    Double kumpiPaa=Math.random();
+                    if(ylay==9 || (kumpiPaa<0.5 && alay-1>=0 && kohdelauta[alay-1][viimeksiOsunutX]==0)){   // ammutaan vasempaan paahan
+                        int[] palautettava={viimeksiOsunutX, alay-1};
+                        return palautettava;
+                    }
+                    else{             // ammutaan oikeaan paahan
+                        int[] palautettava={viimeksiOsunutX, ylay+1};
+                        return palautettava;
+                    }
+                    
+                }
+            } else {
+                while (true) {
+                    int suunta = (int) (4 * Math.random()); // 0=N, 1=E, 2=S, 3=W
+                    if (suunta == 0 && viimeksiOsunutY - 1 >= 0) {
+                        if (kohdelauta[viimeksiOsunutY - 1][viimeksiOsunutX] == 0) {
+                            int[] palautettava = {viimeksiOsunutX, viimeksiOsunutY - 1};
+                            return palautettava;
+                        }
+                    }
+                    if (suunta == 1 && viimeksiOsunutX + 1 <= 9) {
+                        if (kohdelauta[viimeksiOsunutY][viimeksiOsunutX + 1] == 0) {
+                            int[] palautettava = {viimeksiOsunutX + 1, viimeksiOsunutY};
+                            return palautettava;
+                        }
+                    }
+                    if (suunta == 2 && viimeksiOsunutY + 1 <= 9) {
+                        if (kohdelauta[viimeksiOsunutY + 1][viimeksiOsunutX] == 0) {
+                            int[] palautettava = {viimeksiOsunutX, viimeksiOsunutY + 1};
+                            return palautettava;
+                        }
+                    }
+                    if (suunta == 3 && viimeksiOsunutX - 1 >= 0) {
+                        if (kohdelauta[viimeksiOsunutY][viimeksiOsunutX - 1] == 0) {
+                            int[] palautettava = {viimeksiOsunutX - 1, viimeksiOsunutY};
+                            return palautettava;
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+
         int x = 0;
         int y = 0;
         for (int i = 0; i < 10; i++) {
@@ -47,7 +140,7 @@ public class Tietokonevastustaja {
             }
         }
         int indeksi = (int) (ammuttavanx.size() * Math.random());
-        System.out.println(indeksi);
+      
         x = ammuttavanx.get(indeksi);
         y = ammuttavany.get(indeksi);
 
@@ -64,8 +157,8 @@ public class Tietokonevastustaja {
             int suunta = (int) (4 * Math.random()); // suunnat: 0=p 1=i 2=e 3=l
 
             boolean testimuuttuja;
-            int loppux;
             int loppuy;
+            int loppux;
 
             if (suunta == 0) {
                 loppux = alkux;
@@ -111,6 +204,41 @@ public class Tietokonevastustaja {
         ammuttujenx.add(x);
         ammuttujeny.add(y);
         ammuttujentulos.add(tulos);
+        if (upotusKesken && (tulos == 2 || tulos == 3)) {
+            suuntaTiedossa = true;
+            int koskaOsuiViimeksi = 0;
+            for (int i = 1; i < 5; i++) {
+                if (ammuttujentulos.size()>=(i+1) && ammuttujentulos.get(ammuttujentulos.size() - i -1) == 2) {
+                    koskaOsuiViimeksi = i;
+                }
+            }
+            if (ammuttujenx.get(ammuttujentulos.size() - koskaOsuiViimeksi -1) == viimeksiOsunutX) {
+                upotettavaVaaka = false;
+            } else {
+                upotettavaVaaka = true;
+            }
+
+
+        }
+        if (tulos == 2 && upotusKesken == false) {
+            upotusKesken = true;
+        }
+        if (tulos == 2 || tulos == 3) {
+            viimeksiOsunutX = x;
+            viimeksiOsunutY = y;
+        }
+        if (tulos == 3) {
+            upotusKesken = false;
+            suuntaTiedossa = false;
+            kohdelauta[y][x]=3;
+        }
+        if(tulos==2){
+            kohdelauta[y][x]=2;
+            
+        }
+        if(tulos==1){
+            kohdelauta[y][x]=1;
+        }
 
 
     }
