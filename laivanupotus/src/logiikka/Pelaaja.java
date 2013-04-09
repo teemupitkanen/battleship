@@ -19,7 +19,7 @@ public class Pelaaja {
         }
     }
 
-    public void ammu(int x, int y, int tulos) {
+    public void merkkaaTulos(int x, int y, int tulos) {
         kohdelauta[y][x] = tulos;
     }
 
@@ -33,7 +33,7 @@ public class Pelaaja {
     }
 
     public boolean asetaLaiva(int alkux, int alkuy, int loppux, int loppuy) {
-        if (lauta.asetaLaiva(alkux, alkuy, loppux, loppuy)) {
+        if (asetetutLaivat<5 && lauta.asetaLaiva(alkux, alkuy, loppux, loppuy)) {
             laivat[asetetutLaivat] = lauta.getLauta()[alkuy][alkux].getLaiva();
             asetetutLaivat++;
             return true;

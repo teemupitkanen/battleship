@@ -1,8 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
+import logiikka.Ruutu;
 import logiikka.Laiva;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,21 +7,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author teempitk
- */
 public class LaivaTest {
     private Laiva laiva;
     public LaivaTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
     }
     
     @Before
@@ -33,11 +17,8 @@ public class LaivaTest {
         laiva=new Laiva(3);
     }
     
-    @After
-    public void tearDown() {
-    }
     @Test
-    public void uudenLaivanKokoOnOikein(){
+    public void laivaUppoaaKunKoonVerranOsumia(){
         laiva.osuma();
         laiva.osuma();
         laiva.osuma();
@@ -52,5 +33,35 @@ public class LaivaTest {
     @Test
     public void uusiLaivaOnPinnalla(){
         assertEquals(false,laiva.onkoUponnut());
+    }
+    @Test
+    public void lisaaRuutuToimii(){
+        Ruutu ruutu=new Ruutu(0,0);
+        laiva.lisaaRuutu(ruutu);
+        assertEquals(ruutu,laiva.getRuudut()[0]);
+    }
+    @Test
+    public void getRuudutPalauttaaOikeinJosLaivanPituudenVerranRuutuja(){
+        Ruutu ruutu1=new Ruutu(0,0);
+        Ruutu ruutu2=new Ruutu(0,1);
+        Ruutu ruutu3=new Ruutu(0,2);
+        laiva.lisaaRuutu(ruutu1);
+        laiva.lisaaRuutu(ruutu2);
+        laiva.lisaaRuutu(ruutu3);
+        Ruutu[] malli = {ruutu1,ruutu2,ruutu3};
+        assertEquals(malli,laiva.getRuudut());
+    }
+    @Test
+    public void lisaaRuutuEiLisaaJosLaivallaKoonVerranRuutuja(){
+        Ruutu ruutu1=new Ruutu(0,0);
+        Ruutu ruutu2=new Ruutu(0,1);
+        Ruutu ruutu3=new Ruutu(0,2);
+        Ruutu ruutu4=new Ruutu(0,3);
+        laiva.lisaaRuutu(ruutu1);
+        laiva.lisaaRuutu(ruutu2);
+        laiva.lisaaRuutu(ruutu3);
+        laiva.lisaaRuutu(ruutu4);
+        Ruutu[] malli = {ruutu1,ruutu2,ruutu3};
+        assertEquals(malli,laiva.getRuudut());
     }
 }

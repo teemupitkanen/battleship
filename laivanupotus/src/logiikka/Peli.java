@@ -40,27 +40,5 @@ public class Peli {
     public static Tietokonevastustaja getVastus(){
         return vastus;
     }
-//    private static void pelaa() {
-//        while (true) {
-//            while (true) {
-//                if (!pelaaja.ammu()) {
-//                    break;
-//                }
-//            }
-//            if (pvoittaa()) {                   // LISATTAVA! TARKISTETTAVA VOITTO USEIDEN OSUMIEN VALILLA!
-//                System.out.println("Sinä voitit!");
-//                break;
-//            }
-//            while (true) {
-//                if (!vastus.pelaa()) {
-//                    break;
-//                }
-//            }
-//            if (vvoittaa()) {
-//                System.out.println("Tietokone voitti!");
-//                break;
-//            }
-//        }
-//    }
 
 }

@@ -33,7 +33,9 @@ public class Kuuntelija implements ActionListener {
             }
         } else {
             if (asettaaVaiAmpuu) {
-                upotus.ammu(x, y);
+                if (upotus.onkoPeliKesken()) {
+                    upotus.pelaaKierros(x, y);
+                }
             }
         }
 

@@ -290,4 +290,10 @@ public class PelilautaTest {
         assertEquals(testimuuttuja, 1);
         
     }
+    
+    @Test
+    public void getLautaEiAiheutaVirhetta(){
+        lauta.getLauta();
+    }
+    
 }
