@@ -14,5 +14,5 @@ To 28.3.    3h    Käyttöliittymän parantelua, vastustajan ampuma-algoritmin p
 Pe 29.3.    2h    Refaktorointia. Samalla bugikorjauksia vastustajan ampumalogiikkaan.
 Su 31.3.    1h    Refaktorointia. Lisätty pieniä täydennyksiä, esim. ruutuja ei voi enää klikata kun peli päättyy & osumasta saa nyt uuden vuoron.
 Ti 2.4.     1,5h  Testausta
-Ti 9.4.     4h    Testausta, refaktorointia
+Ti 9.4.     4h    Testausta, refaktorointia, javadoc Ruutu-luokan osalta
 >>>>>>> 828c60b605ed5a0b2193f730cba93a939e2b613e
