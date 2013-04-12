@@ -1,3 +1,5 @@
+package logiikkatestit;
+
 
 import logiikka.Peli;
 import logiikka.Tietokonevastustaja;

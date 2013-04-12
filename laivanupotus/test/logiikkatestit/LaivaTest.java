@@ -1,3 +1,5 @@
+package logiikkatestit;
+
 import logiikka.Ruutu;
 import logiikka.Laiva;
 import org.junit.After;

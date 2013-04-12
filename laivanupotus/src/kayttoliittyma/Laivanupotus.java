@@ -1,4 +1,3 @@
-
 package kayttoliittyma;
 
 import java.awt.*;
@@ -31,11 +30,13 @@ public class Laivanupotus extends JFrame {
     private JTextField t12 = new JTextField("Aseta laivan (5) alkupiste");
     private JTextField t21 = new JTextField("Vihollisen laivat");
     private JTextField t22 = new JTextField("");
+    private int moneskoVuoro;
 
     public Laivanupotus() {
         peli = new Peli();
         vastustajan = new Nappi[100];
         ammuntavaihe = false;
+        moneskoVuoro=0;
         peliKesken = true;
         asetettavanPituus = 5;
         resetoi = new JButton();
@@ -92,7 +93,6 @@ public class Laivanupotus extends JFrame {
 
         resetoi.addActionListener(
                 new ActionListener() {
-
                     public void actionPerformed(ActionEvent tapahtuma) {
                         asetettavanPituus = 5;
                         edellisenPituus = 6;
@@ -142,17 +142,11 @@ public class Laivanupotus extends JFrame {
                 apu = alkux;
                 alkux = loppux;
                 loppux = apu;
-                apu = alkuy;
-                alkuy = loppuy;
-                loppuy = apu;
             }
             if (alkuy > loppuy) {
                 apu = alkuy;
                 alkuy = loppuy;
                 loppuy = apu;
-                apu = alkux;
-                alkux = loppux;
-                loppux = apu;
             }
             if ((alkuy == loppuy && (loppux - alkux + 1) == asetettavanPituus) || (alkux == loppux && loppuy - alkuy + 1 == asetettavanPituus)) {
                 if (peli.getPelaaja().asetaLaiva(alkux, alkuy, loppux, loppuy)) {     // Merkitään ruudussa hyväksytyn laivan pisteet X:llä
@@ -203,7 +197,10 @@ public class Laivanupotus extends JFrame {
     }
 
     public void pelaaKierros(int x, int y) {
-        if (!peli.getPelaaja().onkoAmmuttu(x, y) || vastusOsui==true) {
+        if(!pelaajaOsui && !vastusOsui){
+            moneskoVuoro++;
+        }
+        if (!peli.getPelaaja().onkoAmmuttu(x, y) || vastusOsui == true && peliKesken) {
             if (!vastusOsui) {
                 if (ammuPelaaja(x, y)) {
                     pelaajaOsui = true;
@@ -214,7 +211,12 @@ public class Laivanupotus extends JFrame {
             if (!pelaajaOsui) {
                 if (ammuVastus()) {
                     vastusOsui = true;
-                    pelaaKierros(x,y);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception c) {
+                        System.out.println("ohjelman tauko epaonnistui");
+                    }
+                    pelaaKierros(x, y);
                 } else {
                     vastusOsui = false;
                 }
@@ -241,6 +243,7 @@ public class Laivanupotus extends JFrame {
         }
         if (peli.pvoittaa()) {
             peliKesken = false;
+            IlmoitusPop ilmo = new IlmoitusPop("Sinä voitit vuorolla "+moneskoVuoro+"!");
             t22.setText("Sinä voitit pelin!");
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
@@ -265,6 +268,7 @@ public class Laivanupotus extends JFrame {
             osuiko = true;
             Peli.getPelaaja().getLauta().getLauta()[ay][ax].getLaiva().osuma();
             pelaajan[10 * ay + ax].setText("#");
+            
             if (!Peli.getPelaaja().getLauta().getLauta()[ay][ax].getLaiva().onkoUponnut()) {
                 peli.getVastus().asetaTulos(2, ax, ay);
             } else {
@@ -279,6 +283,7 @@ public class Laivanupotus extends JFrame {
             peliKesken = false;
             t12.setText("Tietokone voitti!");
             t22.setText("Tietokone voitti!");
+            IlmoitusPop ilmo = new IlmoitusPop("Tietokone voitti vuorolla "+moneskoVuoro+"!");
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
                     if (Peli.getVastus().getRuudunTila(j, i).equals("laiva") && !Peli.getPelaaja().onkoAmmuttu(j, i)) {
@@ -311,6 +316,7 @@ public class Laivanupotus extends JFrame {
         ikkuna.pack();
         ikkuna.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ikkuna.setSize(1000, 500);
+        ikkuna.setMinimumSize(new Dimension(1000,500));
         ikkuna.setVisible(true);
     }
 

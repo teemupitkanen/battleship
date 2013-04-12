@@ -1,3 +1,5 @@
+package logiikkatestit;
+
 
 import logiikka.Laiva;
 import logiikka.Peli;

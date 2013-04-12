@@ -1,5 +1,8 @@
 package logiikka;
-
+/**
+ * Ruutu-olio kuvaa yksittäistä pelaajan oman pelilaudan ruutua. Ruutu sisältää tietoa sijainnistaan, ja mahdollisesti ruudussa sijaitsevasta laivasta.
+ * @author teempitk
+ */
 public class Ruutu {
 
     /**
