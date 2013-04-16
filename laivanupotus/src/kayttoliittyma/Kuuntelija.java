@@ -6,6 +6,7 @@ package kayttoliittyma;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import logiikka.Peli;
 
 /**
  *
@@ -15,26 +16,26 @@ public class Kuuntelija implements ActionListener {
 
     private int x;
     private int y;
-    private Laivanupotus upotus;
     private boolean asettaaVaiAmpuu;  // false=asettaa, true=ampuu
+    private Peli peli;
 
-    public Kuuntelija(int x, int y, Laivanupotus upotus, boolean ampuuko) {
+    public Kuuntelija(int x, int y, Peli peli, boolean ampuuko) {
         this.x = x;
         this.y = y;
-        this.upotus = upotus;
         asettaaVaiAmpuu = ampuuko;
+        this.peli=peli;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!upotus.onkoAmmuntavaihe()) {
+        if (!peli.onkoAmmuntavaihe()) {
             if (!asettaaVaiAmpuu) {
-                upotus.aseta(x, y);
+                peli.aseta(x, y);
             }
         } else {
             if (asettaaVaiAmpuu) {
-                if (upotus.onkoPeliKesken()) {
-                    upotus.pelaaKierros(x, y);
+                if (peli.onkoPeliKesken()) {
+                    peli.pelaaKierros(x, y);
                 }
             }
         }

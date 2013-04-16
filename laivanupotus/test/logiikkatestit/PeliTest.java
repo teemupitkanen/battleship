@@ -1,6 +1,8 @@
 package logiikkatestit;
 
 
+import kayttoliittyma.Laivanupotus;
+import kayttoliittyma.Nappi;
 import logiikka.Laiva;
 import logiikka.Peli;
 import org.junit.Before;
@@ -16,7 +18,13 @@ public class PeliTest {
 
     @Before
     public void setUp() {
-        peli = new Peli();
+        Nappi[] nappitaulukko1=new Nappi[100];
+        Nappi[] nappitaulukko2=new Nappi[100];
+        for(int i=0;i<100;i++){
+            nappitaulukko1[i]=new Nappi("");
+            nappitaulukko2[i]=new Nappi("");
+        }
+        peli = new Peli(new Laivanupotus(), nappitaulukko1, nappitaulukko2);
         peli.getPelaaja().asetaLaiva(0, 0, 4, 0);
         peli.getPelaaja().asetaLaiva(0, 2, 3, 2);
         peli.getPelaaja().asetaLaiva(0, 4, 2, 4);
