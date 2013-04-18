@@ -31,6 +31,7 @@ public class Kuuntelija implements ActionListener {
         if (!peli.onkoAmmuntavaihe()) {
             if (!asettaaVaiAmpuu) {
                 peli.aseta(x, y);
+                peli.naytaLaudat();
             }
         } else {
             if (asettaaVaiAmpuu) {

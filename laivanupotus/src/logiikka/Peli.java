@@ -80,6 +80,10 @@ public class Peli {
      * Käyttöliittymä, joka liittyy peliin
      */
     private Laivanupotus upotus;
+    /**
+     * Linkki viimeksi esitettyyn ilmoitus pop-uppiin
+     */
+    private IlmoitusPop ilmoitusikkuna;
 
     /**
      * luo uuden pelaaja- ja tietokonevastustajaolion, alustaa muuttujien arvot
@@ -215,7 +219,7 @@ public class Peli {
         }
         if (pvoittaa()) {
             peliKesken = false;
-            IlmoitusPop ilmo = new IlmoitusPop("Sinä voitit vuorolla " + moneskoVuoro + "!");
+            ilmoitusikkuna = new IlmoitusPop(this, "Sinä voitit vuorolla " + moneskoVuoro + "!");
             upotus.naytaLaivat();
         }
         return osuiko;
@@ -259,7 +263,7 @@ public class Peli {
             peliKesken = false;
             upotus.asetaOmaTeksti("Tietokone voitti!");
             upotus.asetaVastuksenTeksti("Tietokone voitti!");
-            IlmoitusPop ilmo = new IlmoitusPop("Tietokone voitti vuorolla " + moneskoVuoro + "!");
+            ilmoitusikkuna = new IlmoitusPop(this, "Tietokone voitti vuorolla " + moneskoVuoro + "!");
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
                     if (Peli.vastus.getRuudunTila(j, i).equals("laiva") && !Peli.pelaaja.onkoAmmuttu(j, i)) {
@@ -312,8 +316,8 @@ public class Peli {
         return vastus;
     }
 
-    private static void naytaLaudat() {
-
+    public static void naytaLaudat() {
+        System.out.println("");
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (Peli.pelaaja.getRuudunTila(j, i).equals("laiva")) {
@@ -337,6 +341,7 @@ public class Peli {
             }
             System.out.println("");
         }
+        System.out.println("");
     }
 
     /**
@@ -374,5 +379,13 @@ public class Peli {
             ammuntavaihe = true;
 
         }
+    }
+
+    public void aloitaAlusta() {
+        upotus.aloitaAlusta();
+        ilmoitusikkuna.setVisible(false);
+    }
+    public Laivanupotus getUpotus(){
+        return upotus;
     }
 }

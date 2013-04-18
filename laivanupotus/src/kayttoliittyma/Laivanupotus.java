@@ -19,16 +19,21 @@ public class Laivanupotus extends JFrame {
     private int apuy;
     private Nappi[] vastustajan;
     private Nappi[] pelaajan;
-    private JButton resetoi;
+    private JButton resetoi = new JButton("Aloita alusta");
+    private JButton lopeta = new JButton("Lopeta");
     private Peli peli;
     private JTextField t11 = new JTextField("Sinun laivasi");
     private JTextField t12 = new JTextField("Aseta laivan (5) alkupiste");
     private JTextField t21 = new JTextField("Vihollisen laivat");
     private JTextField t22 = new JTextField("");
+    private Kuuntelija apukuuntelija;
+    private Kuuntelija[] kuuntelijataulu;
+    private int annetutKuuntelijat;
 
     public Laivanupotus() {
+        kuuntelijataulu=new Kuuntelija[200];
+        annetutKuuntelijat=0;
         vastustajan = new Nappi[100];
-        resetoi = new JButton();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 Nappi apunappi;
@@ -56,7 +61,6 @@ public class Laivanupotus extends JFrame {
             p11.add(nappi);
         }
 
-
         JPanel p12 = new JPanel(new GridLayout(10, 10));
         for (Nappi nappi : vastustajan) {
             p12.add(nappi);
@@ -66,28 +70,42 @@ public class Laivanupotus extends JFrame {
                 apux = j;
                 apuy = i;
                 Nappi nappi = pelaajan[10 * i + j];
+                apukuuntelija=new Kuuntelija(j,i,peli,false);
+                kuuntelijataulu[annetutKuuntelijat]=apukuuntelija;
+                annetutKuuntelijat++;
                 nappi.addActionListener(
-                        new Kuuntelija(j, i, peli, false));
+                        apukuuntelija);
             }
         }
+        JPanel nappulat=new JPanel(new FlowLayout());
+        nappulat.add(resetoi);
+        nappulat.add(lopeta);
+        
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 apux = j;
                 apuy = i;
                 Nappi nappi = vastustajan[10 * i + j];
+                apukuuntelija=new Kuuntelija(j,i,peli,true);
+                kuuntelijataulu[annetutKuuntelijat]=apukuuntelija;
+                annetutKuuntelijat++;
                 nappi.addActionListener(
-                        new Kuuntelija(j, i, peli, true));
+                        apukuuntelija);
             }
         }
 
         resetoi.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent tapahtuma) {
-//                        asetettavanPituus = 5;
-//                        edellisenPituus = 6;
-//                        ammuntavaihe = false;
-//                        alkuAnnettu = false;
+                        aloitaAlusta();
+                    }
+                });
+        
+        lopeta.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent tapahtuma) {
+                        System.exit(0);
 
                     }
                 });
@@ -95,12 +113,12 @@ public class Laivanupotus extends JFrame {
         JPanel t1 = new JPanel(new GridLayout(2, 1));
         t1.add(t11);
         t1.add(t12);
-        t1.add(p11);
+//        t1.add(p11);          // ilmeisesti vanha virhe vaikkei näy haittaavan
 
         JPanel t2 = new JPanel(new GridLayout(2, 1));
         t2.add(t21);
         t2.add(t22);
-        t2.add(p11);
+//        t2.add(p11);
 
         JPanel p21 = new JPanel(new BorderLayout());
         p21.add("North", t1);
@@ -110,10 +128,11 @@ public class Laivanupotus extends JFrame {
         p22.add("North", t2);
         p22.add(p12);
 
-
-        this.setLayout(new GridLayout(1, 2));
+        this.setLayout(new GridLayout(1,3));
         this.add(p21);
+        this.add(nappulat);
         this.add(p22);
+
     }
 
     public void merkkaaUponneeksi(Laiva laiva) {
@@ -132,8 +151,8 @@ public class Laivanupotus extends JFrame {
         ikkuna.setTitle("Laivanupotus");
         ikkuna.pack();
         ikkuna.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ikkuna.setSize(1000, 500);
-        ikkuna.setMinimumSize(new Dimension(1000, 500));
+        ikkuna.setSize(1500, 500);
+        ikkuna.setMinimumSize(new Dimension(1500, 500));
         ikkuna.setVisible(true);
     }
 
@@ -146,12 +165,51 @@ public class Laivanupotus extends JFrame {
         t22.setText(teksti);
 
     }
+
     public void naytaLaivat() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (Peli.getVastus().getRuudunTila(j, i).equals("tyhja")) {
                     vastustajan[10 * i + j].setVisible(false);
                 }
+            }
+        }
+    }
+
+    public void aloitaAlusta() {
+        this.peli = new Peli(this, vastustajan, pelaajan);
+        annetutKuuntelijat=0;
+        for (int i = 0; i < 100; i++) {
+            pelaajan[i].setVisible(true);
+            pelaajan[i].setText("");
+            vastustajan[i].setVisible(true);
+            vastustajan[i].setText("");
+        }
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                apux = j;
+                apuy = i;
+                Nappi nappi = pelaajan[10 * i + j];
+                nappi.removeActionListener(kuuntelijataulu[10*i+j]);
+                apukuuntelija=new Kuuntelija(j,i,peli,false);
+                kuuntelijataulu[annetutKuuntelijat]=apukuuntelija;
+                annetutKuuntelijat++;
+                nappi.addActionListener(
+                        apukuuntelija);
+            }
+        }
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                apux = j;
+                apuy = i;
+                Nappi nappi = vastustajan[10 * i + j];
+                nappi.removeActionListener(kuuntelijataulu[10*i+j+100]);
+                apukuuntelija=new Kuuntelija(j,i,peli,true);
+                kuuntelijataulu[annetutKuuntelijat]=apukuuntelija;
+                annetutKuuntelijat++;
+                nappi.addActionListener(
+                        apukuuntelija);
             }
         }
     }
