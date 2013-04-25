@@ -66,6 +66,31 @@ public class Tietokonevastustaja {
      * Nyt upotuksessa olevan laivan suurin y-koordinaatti, johon on osuttu
      */
     private int maxy;
+    /**
+     * kertoo mikä on lyhin vielä upottamaton laiva ampuma-algoritmin
+     * tehostamiseksi
+     */
+    private int lyhinUpottamaton;
+    /**
+     * true jos 2 ruudun laiva uponnut
+     */
+    private boolean laiva2uponnut;
+    /**
+     * true jos 1. 3 ruudun laiva uponnut
+     */
+    private boolean laiva3auponnut;
+    /**
+     * true jos 2. 3 ruudun laiva uponnut
+     */
+    private boolean laiva3buponnut;
+    /**
+     * true jos 4 ruudun laiva uponnut
+     */
+    private boolean laiva4uponnut;
+    /**
+     * true jos 5 ruudun laiva uponnut
+     */
+    private boolean laiva5uponnut;
 
     /**
      * Luo vastustajalle pelilaudan, luo ja asettaa laivat ja alustaa muuttujien
@@ -95,6 +120,12 @@ public class Tietokonevastustaja {
         upotusKesken = false;
         suuntaTiedossa = false;
         upotettavaVaaka = false;
+        lyhinUpottamaton = 2;
+        laiva2uponnut = false;
+        laiva3auponnut = false;
+        laiva3buponnut = false;
+        laiva4uponnut = false;
+        laiva5uponnut = false;
 
     }
 
@@ -125,7 +156,7 @@ public class Tietokonevastustaja {
         int y = 0;
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if ((i + j + ammutaankoParillisia) % 2 == 0 && kohdelauta[i][j] == 0) {
+                if ((i + j + ammutaankoParillisia) % 2 == 0 && kohdelauta[i][j] == 0 && mahtuukoLyhin(j, i)) {
                     ammuttavanx.add(j);
                     ammuttavany.add(i);
                 }
@@ -321,12 +352,56 @@ public class Tietokonevastustaja {
             upotusKesken = false;
             suuntaTiedossa = false;
             merkkaaUppoaminenKohdelautaan();
+            int upotetunPituus = (maxx - minx + maxy - miny + 2); // Tässä kohtaa jokin mennee pieleen
+            lisaaUponneisiin(upotetunPituus);
+            System.out.println("Pituus:" + upotetunPituus);
             minx = 9;
             maxx = 0;
             miny = 9;
             maxy = 0;
         }
 
+    }
+
+    /**
+     * Lisaa laivan uppoamisen listaan uponneista
+     *
+     * @param pituus uponneen laivan pituus
+     */
+    private void lisaaUponneisiin(int pituus) {
+        switch (pituus) {
+            case (1):
+                System.out.println("virhe1");
+                break;
+            case (2):
+                laiva2uponnut = true;
+                break;
+            case (3):
+                if (laiva3auponnut) {
+                    laiva3buponnut = true;
+                } else {
+                    laiva3auponnut = true;
+                }
+                break;
+            case (4):
+                laiva4uponnut = true;
+                break;
+            case (5):
+                laiva5uponnut = true;
+                break;
+            case (6):
+                System.out.println("virhe6");
+                break;
+        }
+        if (laiva2uponnut) {
+            lyhinUpottamaton = 3;
+            if (laiva3auponnut && laiva3buponnut) {
+                lyhinUpottamaton = 4;
+                if (laiva4uponnut) {
+                    lyhinUpottamaton = 5;
+                }
+            }
+        }
     }
 
     /**
@@ -353,5 +428,70 @@ public class Tietokonevastustaja {
                 kohdelauta[i][maxx + 1] = 1;
             }
         }
+    }
+
+    /**
+     * Tarkistaa mahtuuko lyhin löytämätön laiva ruutuun
+     *
+     * @param x kysytty x
+     * @param y kysytty y
+     * @return true jos mahtuu, muuten false
+     */
+    private boolean mahtuukoLyhin(int x, int y) {
+        if (tilaaPysty(x, y) >= lyhinUpottamaton || tilaaVaaka(x, y) >= lyhinUpottamaton) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Tarkistaa paljonko kohdelaudassa on tilaa pystysuunnassa annetusta
+     * ruudusta
+     *
+     * @param x kysytty x
+     * @param y kysytty y
+     * @return paljonko tilaa
+     */
+    private int tilaaPysty(int x, int y) {
+        int tilaa = 1;
+        for (int j = y - 1; j >= 0; j--) {
+            if (kohdelauta[j][x] != 0) {
+                break;
+            }
+            tilaa++;
+        }
+        for (int j = y + 1; j <= 9; j++) {
+            if (kohdelauta[j][x] != 0) {
+                break;
+            }
+            tilaa++;
+        }
+        return tilaa;
+    }
+
+    /**
+     * Tarkistaa paljonko kohdelaudassa on tilaa vaakasuunnassa annetusta
+     * ruudusta
+     *
+     * @param x kysytty x
+     * @param y kysytty y
+     * @return paljonko tilaa
+     */
+    private int tilaaVaaka(int x, int y) {
+        int tilaa = 1;
+        for (int i = x - 1; i >= 0; i--) {
+            if (kohdelauta[y][i] != 0) {
+                break;
+            }
+            tilaa++;
+        }
+        for (int i = x + 1; i <= 9; i++) {
+            if (kohdelauta[y][i] != 0) {
+                break;
+            }
+            tilaa++;
+        }
+        return tilaa;
     }
 }

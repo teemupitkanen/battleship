@@ -407,14 +407,18 @@ public class Peli {
 
         }
     }
-/**
- * Aloittaa pelin alusta
- */
+
+    /**
+     * Aloittaa pelin alusta
+     */
     public void aloitaAlusta() {
         upotus.aloitaAlusta();
         ilmoitusikkuna.setVisible(false);
     }
-
+    /**
+     * Palauttaa peliin liittyvän laivanupotus-käyttöliittymän
+     * @return pelin käyttöliittymä
+     */
     public Laivanupotus getUpotus() {
         return upotus;
     }
@@ -482,10 +486,13 @@ public class Peli {
         double[] palautettava = {voittoprosentti, omakeskimvuoro, vastkeskimvuoro, pelatutKierrokset};
         return palautettava;
     }
-/**
- * Avaa varoitus-pop-upin pelin lopettamisesta tai resetoinnista, joka aiheuttaisi häviön.
- * @param lopetetaan kertoo yritetäänkö resetoida vai lopettaa
- */
+
+    /**
+     * Avaa varoitus-pop-upin pelin lopettamisesta tai resetoinnista, joka
+     * aiheuttaisi häviön.
+     *
+     * @param lopetetaan kertoo yritetäänkö resetoida vai lopettaa
+     */
     public void uusiVaroitusKeskeyttamisesta(boolean lopetetaan) {
         if (lopetetaan) {
             ilmoitusikkuna = new IlmoitusPop(this, "Haluatko varmasti lopettaa? Häviät pelin.", true);
