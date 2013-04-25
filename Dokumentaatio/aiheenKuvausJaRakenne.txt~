@@ -1,0 +1,15 @@
+﻿Aihe: Laivanupotus
+
+Tavoitteena ohjelmoida laivanupotuspeli, jossa pelaaja arvaa tietokoneen 10*10 -ruudukkoon piilottamia ”laivoja”, ja tietokone pelaajan piilottamia. Laivoja on 5kpl/pelaaja, ja ne ovat pituuksiltaan 2,3,3,4 ja 5 ruutua. 
+
+Pelin aluksi pelaaja asettaa laivansa ruudukkoon. Laivoja ei saa asettaa kuin pysty- ja vaakasuoraan, eivätkä kaksi laivaa saa koskea toisiinsa, paitsi kulmittain. Seuraavaksi peli arpoo ”tietokonevastustajan” laivojen sijainnin sääntöjen mukaisesti. Kumpikaan pelaajista ei näe toistensa laivojen sijoittelua. 
+
+Kun laivat on sijoiteltu, pelaajat ilmoittavat vuorotellen ruudun, johon ampuvat, ja peli ilmoittaa jonkun seuraavista: ”ohi”, ”osui” tai ”osui ja upposi”. Uppoaminen tapahtuu, kun osuma kohdistuu laivan viimeiseen osumattomaan ruutuun. Vastustajaan osunut pelaaja saa lisävuoron. Ohjelma näyttää peliä pelaavalle ihmiselle kahta ruudukkoa, toista jossa näkyy pelaajan omat laivat ja vihollisen ampumat pisteet, ja toisella kirjanpito omista osumista ja huteista.
+
+Kun toisen pelaajan kaikki laivat ovat uponneet, vastustaja on voittanut.
+
+Käyttäjät: pelaaja
+
+Pelaajan toiminnot:
+-laivojen sijoittaminen
+-ruudun arvaaminen

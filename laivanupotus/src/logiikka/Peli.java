@@ -4,6 +4,10 @@ import javax.swing.JButton;
 import kayttoliittyma.IlmoitusPop;
 import kayttoliittyma.Laivanupotus;
 import kayttoliittyma.Nappi;
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Peli-luokka on laivanupotuksen loogisen toiminnan ylin luokka. Peli luo
@@ -84,6 +88,11 @@ public class Peli {
      * Linkki viimeksi esitettyyn ilmoitus pop-uppiin
      */
     private IlmoitusPop ilmoitusikkuna;
+    /**
+     * Kertoo onko pelissä tapahtunut jo ammuntaa, eli vboiko uuden aloittaa
+     * luovuttamatta
+     */
+    private boolean onkoJoAmmuttu;
 
     /**
      * luo uuden pelaaja- ja tietokonevastustajaolion, alustaa muuttujien arvot
@@ -99,6 +108,7 @@ public class Peli {
         moneskoVuoro = 0;
         peliKesken = true;
         asetettavanPituus = 5;
+        onkoJoAmmuttu = false;
     }
 
     /**
@@ -171,6 +181,7 @@ public class Peli {
      * @param y pelaajan ampuman pisteen y-koordinaatti
      */
     public void pelaaKierros(int x, int y) {
+        onkoJoAmmuttu = true;
         if (!pelaaja.onkoAmmuttu(x, y) || vastusOsui == true && peliKesken) {
             if (!pelaajaOsui && !vastusOsui) {
                 moneskoVuoro++;
@@ -219,7 +230,14 @@ public class Peli {
         }
         if (pvoittaa()) {
             peliKesken = false;
-            ilmoitusikkuna = new IlmoitusPop(this, "Sinä voitit vuorolla " + moneskoVuoro + "!");
+            upotus.asetaOmaTeksti("Sinä voitit!");
+            upotus.asetaVastuksenTeksti("Sinä voitit!");
+            double[] tilastot = haeJaPaivitaStatistiikat("voitto", moneskoVuoro);
+            double voittoprosentti = tilastot[0];
+            double omakeskimvuoro = tilastot[1];
+            double vastkeskimvuoro = tilastot[2];
+            int kierrokset = (int) tilastot[3];
+            ilmoitusikkuna = new IlmoitusPop(this, "Sinä voitit vuorolla " + moneskoVuoro + "!", voittoprosentti, omakeskimvuoro, vastkeskimvuoro, kierrokset);
             upotus.naytaLaivat();
         }
         return osuiko;
@@ -263,7 +281,12 @@ public class Peli {
             peliKesken = false;
             upotus.asetaOmaTeksti("Tietokone voitti!");
             upotus.asetaVastuksenTeksti("Tietokone voitti!");
-            ilmoitusikkuna = new IlmoitusPop(this, "Tietokone voitti vuorolla " + moneskoVuoro + "!");
+            double[] tilastot = haeJaPaivitaStatistiikat("tappio", moneskoVuoro);
+            double voittoprosentti = tilastot[0];
+            double omakeskimvuoro = tilastot[1];
+            double vastkeskimvuoro = tilastot[2];
+            int kierrokset = (int) tilastot[3];
+            ilmoitusikkuna = new IlmoitusPop(this, "Tietokone voitti vuorolla " + moneskoVuoro + "!", voittoprosentti, omakeskimvuoro, vastkeskimvuoro, kierrokset);
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
                     if (Peli.vastus.getRuudunTila(j, i).equals("laiva") && !Peli.pelaaja.onkoAmmuttu(j, i)) {
@@ -316,6 +339,10 @@ public class Peli {
         return vastus;
     }
 
+    /**
+     * Testailua helpottamaan kirjoitettu metodi, joka tulostaa molemmat
+     * pelilaudat laivoineen
+     */
     public static void naytaLaudat() {
         System.out.println("");
         for (int i = 0; i < 10; i++) {
@@ -380,12 +407,107 @@ public class Peli {
 
         }
     }
-
+/**
+ * Aloittaa pelin alusta
+ */
     public void aloitaAlusta() {
         upotus.aloitaAlusta();
         ilmoitusikkuna.setVisible(false);
     }
-    public Laivanupotus getUpotus(){
+
+    public Laivanupotus getUpotus() {
         return upotus;
+    }
+
+    /**
+     * tallentaa pelin loppumisvuoron ja tuloksen tiedostoon, lukee tiedostosta
+     * aiemmat tulokset ja palauttaa voittoprosentin ja keskimääräisen
+     * loppumisvuoron.
+     *
+     * @param tulos tämän pelin tulos, "voitto"/"tappio"
+     * @param vuoro tämän pelin päättymisvuoro
+     * @return voittoprosentti, keskimääräinen loppunmisvuoro
+     */
+    public double[] haeJaPaivitaStatistiikat(String tulos, int vuoro) {
+        File file = new File("/cs/fs/home/teempitk/Javalabra/laivanupotus/savefile.txt");
+        ArrayList<Integer> tulokset = new ArrayList();
+        ArrayList<Integer> vuorot = new ArrayList();
+        Scanner skanneri = null;
+        int voittojenmaara = 0;
+        double voittoprosentti;
+        int omavuorosumma = 0;
+        int vastvuorosumma = 0;
+        double omakeskimvuoro;
+        double vastkeskimvuoro;
+        int pelatutKierrokset;
+        try {
+            skanneri = new Scanner(file);
+        } catch (Exception e) {
+            System.out.println("moi");
+        }
+        while (skanneri.hasNext()) {
+            tulokset.add(Integer.parseInt(skanneri.next()));
+            vuorot.add(Integer.parseInt(skanneri.next()));
+        }
+        if (tulos.equals("tappio")) {
+            tulokset.add(0);
+        } else {
+            tulokset.add(1);
+        }
+        vuorot.add(vuoro);
+
+
+
+        PrintWriter kirj = null;
+        try {
+            kirj = new PrintWriter(file);
+        } catch (Exception c) {
+            System.out.println("tiedostoa ei löytynyt");
+        }
+        for (int i = 0; i < tulokset.size(); i++) {
+            if (tulokset.get(i) == 1) {
+                voittojenmaara++;
+                omavuorosumma = omavuorosumma + vuorot.get(i);
+            } else {
+                vastvuorosumma = vastvuorosumma + vuorot.get(i);
+            }
+            kirj.print(tulokset.get(i) + " ");
+            kirj.println(vuorot.get(i));
+        }
+        kirj.close();
+        voittoprosentti = 100 * (1.0 * voittojenmaara / tulokset.size());
+        omakeskimvuoro = 1.0 * omavuorosumma / voittojenmaara;
+        vastkeskimvuoro = 1.0 * vastvuorosumma / (vuorot.size() - voittojenmaara);
+        pelatutKierrokset = tulokset.size();
+        double[] palautettava = {voittoprosentti, omakeskimvuoro, vastkeskimvuoro, pelatutKierrokset};
+        return palautettava;
+    }
+/**
+ * Avaa varoitus-pop-upin pelin lopettamisesta tai resetoinnista, joka aiheuttaisi häviön.
+ * @param lopetetaan kertoo yritetäänkö resetoida vai lopettaa
+ */
+    public void uusiVaroitusKeskeyttamisesta(boolean lopetetaan) {
+        if (lopetetaan) {
+            ilmoitusikkuna = new IlmoitusPop(this, "Haluatko varmasti lopettaa? Häviät pelin.", true);
+        } else {
+            ilmoitusikkuna = new IlmoitusPop(this, "Haluatko varmasti luovuttaa? Häviät pelin.", false);
+        }
+    }
+
+    /**
+     * Kertoo onko pelissä jo ammuttu (eli voidaanko keskeyttää häviämättä)
+     *
+     * @return true jos on ammuttu
+     */
+    public boolean onkoJoAmmuttu() {
+        return onkoJoAmmuttu;
+    }
+
+    /**
+     * Paivittää tilastoihin tappion siinä tapauksessa, että peli lopetetaan
+     * kesken.
+     */
+    public void paivitaKeskeytettyTilastoihin() {
+        haeJaPaivitaStatistiikat("tappio", moneskoVuoro);
     }
 }

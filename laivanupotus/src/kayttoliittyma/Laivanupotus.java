@@ -31,8 +31,8 @@ public class Laivanupotus extends JFrame {
     private int annetutKuuntelijat;
 
     public Laivanupotus() {
-        kuuntelijataulu=new Kuuntelija[200];
-        annetutKuuntelijat=0;
+        kuuntelijataulu = new Kuuntelija[200];
+        annetutKuuntelijat = 0;
         vastustajan = new Nappi[100];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -70,22 +70,22 @@ public class Laivanupotus extends JFrame {
                 apux = j;
                 apuy = i;
                 Nappi nappi = pelaajan[10 * i + j];
-                apukuuntelija=new Kuuntelija(j,i,peli,false);
-                kuuntelijataulu[annetutKuuntelijat]=apukuuntelija;
+                apukuuntelija = new Kuuntelija(j, i, peli, false);
+                kuuntelijataulu[annetutKuuntelijat] = apukuuntelija;
                 annetutKuuntelijat++;
                 nappi.addActionListener(
                         apukuuntelija);
             }
         }
-     
+
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 apux = j;
                 apuy = i;
                 Nappi nappi = vastustajan[10 * i + j];
-                apukuuntelija=new Kuuntelija(j,i,peli,true);
-                kuuntelijataulu[annetutKuuntelijat]=apukuuntelija;
+                apukuuntelija = new Kuuntelija(j, i, peli, true);
+                kuuntelijataulu[annetutKuuntelijat] = apukuuntelija;
                 annetutKuuntelijat++;
                 nappi.addActionListener(
                         apukuuntelija);
@@ -95,14 +95,23 @@ public class Laivanupotus extends JFrame {
         resetoi.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent tapahtuma) {
-                        aloitaAlusta();
+                        if (peli.onkoJoAmmuttu()) {
+                            peli.uusiVaroitusKeskeyttamisesta(false);
+                        } else {
+                            aloitaAlusta();
+                        }
                     }
                 });
-        
+
         lopeta.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent tapahtuma) {
-                        System.exit(0);
+                        if (peli.onkoJoAmmuttu()) {
+                            peli.uusiVaroitusKeskeyttamisesta(true);
+                        } else {
+                            System.exit(0);
+                        }
+
 
                     }
                 });
@@ -118,14 +127,14 @@ public class Laivanupotus extends JFrame {
         JPanel p21 = new JPanel(new BorderLayout());
         p21.add("North", t1);
         p21.add(p11);
-        p21.add("South",resetoi);
+        p21.add("South", resetoi);
 
         JPanel p22 = new JPanel(new BorderLayout());
         p22.add("North", t2);
         p22.add(p12);
-        p22.add("South",lopeta);
+        p22.add("South", lopeta);
 
-        this.setLayout(new GridLayout(1,2));
+        this.setLayout(new GridLayout(1, 2));
         this.add(p21);
         this.add(p22);
 
@@ -173,8 +182,10 @@ public class Laivanupotus extends JFrame {
     }
 
     public void aloitaAlusta() {
+        t12.setText("Aseta laivan (5) alkupiste");
+        t22.setText("");
         this.peli = new Peli(this, vastustajan, pelaajan);
-        annetutKuuntelijat=0;
+        annetutKuuntelijat = 0;
         for (int i = 0; i < 100; i++) {
             pelaajan[i].setVisible(true);
             pelaajan[i].setText("");
@@ -186,9 +197,9 @@ public class Laivanupotus extends JFrame {
                 apux = j;
                 apuy = i;
                 Nappi nappi = pelaajan[10 * i + j];
-                nappi.removeActionListener(kuuntelijataulu[10*i+j]);
-                apukuuntelija=new Kuuntelija(j,i,peli,false);
-                kuuntelijataulu[annetutKuuntelijat]=apukuuntelija;
+                nappi.removeActionListener(kuuntelijataulu[10 * i + j]);
+                apukuuntelija = new Kuuntelija(j, i, peli, false);
+                kuuntelijataulu[annetutKuuntelijat] = apukuuntelija;
                 annetutKuuntelijat++;
                 nappi.addActionListener(
                         apukuuntelija);
@@ -200,9 +211,9 @@ public class Laivanupotus extends JFrame {
                 apux = j;
                 apuy = i;
                 Nappi nappi = vastustajan[10 * i + j];
-                nappi.removeActionListener(kuuntelijataulu[10*i+j+100]);
-                apukuuntelija=new Kuuntelija(j,i,peli,true);
-                kuuntelijataulu[annetutKuuntelijat]=apukuuntelija;
+                nappi.removeActionListener(kuuntelijataulu[10 * i + j + 100]);
+                apukuuntelija = new Kuuntelija(j, i, peli, true);
+                kuuntelijataulu[annetutKuuntelijat] = apukuuntelija;
                 annetutKuuntelijat++;
                 nappi.addActionListener(
                         apukuuntelija);
