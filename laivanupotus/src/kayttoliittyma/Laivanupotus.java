@@ -77,10 +77,7 @@ public class Laivanupotus extends JFrame {
                         apukuuntelija);
             }
         }
-        JPanel nappulat=new JPanel(new FlowLayout());
-        nappulat.add(resetoi);
-        nappulat.add(lopeta);
-        
+     
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -113,24 +110,23 @@ public class Laivanupotus extends JFrame {
         JPanel t1 = new JPanel(new GridLayout(2, 1));
         t1.add(t11);
         t1.add(t12);
-//        t1.add(p11);          // ilmeisesti vanha virhe vaikkei näy haittaavan
 
         JPanel t2 = new JPanel(new GridLayout(2, 1));
         t2.add(t21);
         t2.add(t22);
-//        t2.add(p11);
 
         JPanel p21 = new JPanel(new BorderLayout());
         p21.add("North", t1);
         p21.add(p11);
+        p21.add("South",resetoi);
 
         JPanel p22 = new JPanel(new BorderLayout());
         p22.add("North", t2);
         p22.add(p12);
+        p22.add("South",lopeta);
 
-        this.setLayout(new GridLayout(1,3));
+        this.setLayout(new GridLayout(1,2));
         this.add(p21);
-        this.add(nappulat);
         this.add(p22);
 
     }
@@ -151,8 +147,8 @@ public class Laivanupotus extends JFrame {
         ikkuna.setTitle("Laivanupotus");
         ikkuna.pack();
         ikkuna.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ikkuna.setSize(1500, 500);
-        ikkuna.setMinimumSize(new Dimension(1500, 500));
+        ikkuna.setSize(1000, 500);
+        ikkuna.setMinimumSize(new Dimension(1000, 500));
         ikkuna.setVisible(true);
     }
 

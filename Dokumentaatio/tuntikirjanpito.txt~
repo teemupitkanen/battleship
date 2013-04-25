@@ -15,3 +15,4 @@ Ti 2.4.     1,5h  Testausta
 Ti 9.4.     4h    Testausta, refaktorointia, javadoc Ruutu-luokan osalta
 Pe 12.4.    3,5h  Koodikatselmointi 1 (n. 1,5h), Javadocin kirjoittelua lopuille luokille, lisätty luokka IlmoitusPop, eli ponnahdusikkuna joka ilmoittaa omasta/vastustajan voitosta pelissä.
 Ti 16.4.    2h    Koodin refaktorointia. Loogiset osuudet irrotettu käyttöliittymän Laivanupotus-luokasta. Metodeja jaettu pienempiin. Testit korjattu toimiviksi. Javadocin täydennys peli-luokan osalta.
+To 18.4.    2,5h  Lisätty nappulat pelin lopettamiseen ja resetointiin sekäperuskäyttöliittymään, että voittoilmoitus-popuppiin. Koodikatselmointi 2 (1h)
