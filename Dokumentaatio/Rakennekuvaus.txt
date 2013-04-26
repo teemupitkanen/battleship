@@ -1,7 +1,5 @@
 ﻿Rakennekuvaus
 
-Huom! Tallennustiedoston suhteellisen osoitteen luonnissa oli hieman ongelmia, minkä vuoksi jar-tiedosto ei välttämättä toimi. Ongelma korjaantuu, jos laivanupotus-kansiossa olevan savefile.txt-tiedoston kopioi dist-hakemistoon.
-
 Pelin logiikan keskeisin kokonaisuus on Peli-luokka. Peli luo konstruktorissaan Pelaajan ja Tietokonevastustajan, ja peli on koko ajan vastuussa pelin etenemisestä ja tietoinen pelin vaiheesta. Pelaajan ampuminen käyttöliittymässä kutsuu Pelin pelaaKierros-metodia, joka hallinnoi pelin kierroksen pelaamisen. Peli myös tietää, kun toinen pelaajista voittaa, ja suorittaa tällöin tarvittavat ilmoitukset.
 
 Pelaaja ja Tietokonevastustaja ovat rakenteeltaan varsin samankaltaiset, ja varmasti hyvä ratkaisu olisikin ollut toteuttaa näille yhteinen aliluokka, koska iso osa metodeista on samoja. Pelaaja ja Vastus luovat itselleen pelilaudat, ja hallinnoivat laivojen asetusta laudalle. Luokat myös palauttavat tiedon lautaansa kohdistuvan ammunnan tuloksesta. Tietokonevastustajan tekoäly sijaitsee myös täällä.
