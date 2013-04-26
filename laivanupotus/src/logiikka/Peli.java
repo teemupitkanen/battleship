@@ -6,6 +6,9 @@ import kayttoliittyma.Laivanupotus;
 import kayttoliittyma.Nappi;
 import java.io.File;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -89,10 +92,10 @@ public class Peli {
      */
     private IlmoitusPop ilmoitusikkuna;
     /**
-     * Kertoo onko pelissä tapahtunut jo ammuntaa, eli vboiko uuden aloittaa
+     * Kertoo onko pelissä tapahtunut jo ammuntaa, eli voiko uuden aloittaa
      * luovuttamatta
      */
-    private boolean onkoJoAmmuttu;
+    private boolean saakoKeskeyttaa;
 
     /**
      * luo uuden pelaaja- ja tietokonevastustajaolion, alustaa muuttujien arvot
@@ -108,7 +111,7 @@ public class Peli {
         moneskoVuoro = 0;
         peliKesken = true;
         asetettavanPituus = 5;
-        onkoJoAmmuttu = false;
+        saakoKeskeyttaa = false;
     }
 
     /**
@@ -133,30 +136,43 @@ public class Peli {
                 apu = alkux;
                 alkux = loppux;
                 loppux = apu;
+                apu = alkuy;
+                alkuy = loppuy;
+                loppuy = apu;
             }
             if (alkuy > loppuy) {
                 apu = alkuy;
                 alkuy = loppuy;
                 loppuy = apu;
+                apu = alkux;
+                alkux = loppux;
+                loppux = apu;
             }
             if ((alkuy == loppuy && (loppux - alkux + 1) == asetettavanPituus) || (alkux == loppux && loppuy - alkuy + 1 == asetettavanPituus)) {
                 if (pelaaja.asetaLaiva(alkux, alkuy, loppux, loppuy)) {
                     paivitaRakenteisiinAsetuksenOnnistuminen();
                 } else {
-                    pelaajan[10 * alkuy + alkux].setText("");
-                    pelaajan[10 * loppuy + loppux].setText("");
+                    if (pelaaja.getRuudunTila(alkux, alkuy).equals("tyhja")) {
+                        pelaajan[10 * alkuy + alkux].setText("");
+                    }
+                    if (pelaaja.getRuudunTila(loppux, loppuy).equals("tyhja")) {
+                        pelaajan[10 * loppuy + loppux].setText("");
+                    }
 
                 }
             } else {
-                pelaajan[10 * alkuy + alkux].setText("");
-                pelaajan[10 * loppuy + loppux].setText("");
+                if (pelaaja.getRuudunTila(alkux, alkuy).equals("tyhja")) {
+                    pelaajan[10 * alkuy + alkux].setText("");
+                }
+                if (pelaaja.getRuudunTila(loppux, loppuy).equals("tyhja")) {
+                    pelaajan[10 * loppuy + loppux].setText("");
+                }
 
             }
             upotus.asetaOmaTeksti("Aseta laivan (" + asetettavanPituus + ") alkupiste");
             if (asetettavanPituus == 0) {
                 upotus.asetaOmaTeksti("Asetteluvaihe on loppunut. Ammu oikeanpuoleiseen ruudukkoon.");
                 upotus.asetaVastuksenTeksti("Klikkaa ruutua ampuaksesi. Osumasta saa uuden vuoron.");
-                naytaLaudat();
             }
         }
 
@@ -181,7 +197,7 @@ public class Peli {
      * @param y pelaajan ampuman pisteen y-koordinaatti
      */
     public void pelaaKierros(int x, int y) {
-        onkoJoAmmuttu = true;
+        saakoKeskeyttaa = true;
         if (!pelaaja.onkoAmmuttu(x, y) || vastusOsui == true && peliKesken) {
             if (!pelaajaOsui && !vastusOsui) {
                 moneskoVuoro++;
@@ -230,6 +246,7 @@ public class Peli {
         }
         if (pvoittaa()) {
             peliKesken = false;
+            saakoKeskeyttaa = false;
             upotus.asetaOmaTeksti("Sinä voitit!");
             upotus.asetaVastuksenTeksti("Sinä voitit!");
             double[] tilastot = haeJaPaivitaStatistiikat("voitto", moneskoVuoro);
@@ -253,8 +270,6 @@ public class Peli {
         int[] ammuttavanKoordinaatit = vastus.ammu();
         int ax = ammuttavanKoordinaatit[0];
         int ay = ammuttavanKoordinaatit[1];
-        System.out.println(ax);
-        System.out.println(ay);
         String vihollisenTulos = Peli.pelaaja.getRuudunTila(ax, ay);
         if (vihollisenTulos.equals("laiva")) {
             osuiko = true;
@@ -264,13 +279,12 @@ public class Peli {
             try {
                 Thread.sleep(500);
             } catch (Exception c) {
-                System.out.println("ohjelman tauko epaonnistui");
+                System.out.println("ohjelman pysayttaminen hetkeksi epaonnistui");
             }
 
             if (!Peli.pelaaja.getLauta().getLauta()[ay][ax].getLaiva().onkoUponnut()) {
                 vastus.asetaTulos(2, ax, ay);
             } else {
-                System.out.println("UPPOSI");
                 vastus.asetaTulos(3, ax, ay);
             }
         } else {
@@ -279,6 +293,7 @@ public class Peli {
         }
         if (vvoittaa()) {
             peliKesken = false;
+            saakoKeskeyttaa = false;
             upotus.asetaOmaTeksti("Tietokone voitti!");
             upotus.asetaVastuksenTeksti("Tietokone voitti!");
             double[] tilastot = haeJaPaivitaStatistiikat("tappio", moneskoVuoro);
@@ -294,6 +309,7 @@ public class Peli {
                     }
                 }
             }
+            osuiko = false; // Jos peli loppui jo, ei anneta enää uutta vuoroa
         }
         return osuiko;
     }
@@ -380,6 +396,10 @@ public class Peli {
         return peliKesken;
     }
 
+    /**
+     * Merkkaa käyttöliittymässä laivan pisteet x-merkillä. Pienentää
+     * seuraavaksi asetettavan laivan kokoa.
+     */
     private void paivitaRakenteisiinAsetuksenOnnistuminen() {
 
         for (int i = alkux; i <= loppux; i++) {
@@ -415,8 +435,10 @@ public class Peli {
         upotus.aloitaAlusta();
         ilmoitusikkuna.setVisible(false);
     }
+
     /**
      * Palauttaa peliin liittyvän laivanupotus-käyttöliittymän
+     *
      * @return pelin käyttöliittymä
      */
     public Laivanupotus getUpotus() {
@@ -432,8 +454,8 @@ public class Peli {
      * @param vuoro tämän pelin päättymisvuoro
      * @return voittoprosentti, keskimääräinen loppunmisvuoro
      */
-    public double[] haeJaPaivitaStatistiikat(String tulos, int vuoro) {
-        File file = new File("/cs/fs/home/teempitk/Javalabra/laivanupotus/savefile.txt");
+    public double[] haeJaPaivitaStatistiikat(String tulos, int vuoro){
+        File file= new File("savefile.txt");
         ArrayList<Integer> tulokset = new ArrayList();
         ArrayList<Integer> vuorot = new ArrayList();
         Scanner skanneri = null;
@@ -447,7 +469,7 @@ public class Peli {
         try {
             skanneri = new Scanner(file);
         } catch (Exception e) {
-            System.out.println("moi");
+            System.out.println("tiedostoa ei loytynyt");
         }
         while (skanneri.hasNext()) {
             tulokset.add(Integer.parseInt(skanneri.next()));
@@ -507,7 +529,7 @@ public class Peli {
      * @return true jos on ammuttu
      */
     public boolean onkoJoAmmuttu() {
-        return onkoJoAmmuttu;
+        return saakoKeskeyttaa;
     }
 
     /**

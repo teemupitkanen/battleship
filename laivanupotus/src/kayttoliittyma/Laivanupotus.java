@@ -15,21 +15,66 @@ import logiikka.Ruutu;
  */
 public class Laivanupotus extends JFrame {
 
+    /**
+     * Väliaikaisen x-koordinaattitiedon tallentamiseen
+     */
     private int apux;
+    /**
+     * Väliaikaisen y-koordinaattitiedon tallentamiseen
+     */
     private int apuy;
+    /**
+     * Taulukko vastustajan pelilaudan napeista
+     */
     private Nappi[] vastustajan;
+    /**
+     * Taulukko pelaajan omista napeista
+     */
     private Nappi[] pelaajan;
+    /**
+     * JButton pelin resetointiin
+     */
     private JButton resetoi = new JButton("Aloita alusta");
+    /**
+     * JButton pelin lopettamiseen
+     */
     private JButton lopeta = new JButton("Lopeta");
+    /**
+     * Käyttöliittymään liittyvä peli
+     */
     private Peli peli;
+    /**
+     * Pelaajan pelilaudan päällä ylimpänä oleva tekstikenttä
+     */
     private JTextField t11 = new JTextField("Sinun laivasi");
+    /**
+     * Pelaajan pelilaudan päällä alempana oleva tekstikenttä
+     */
     private JTextField t12 = new JTextField("Aseta laivan (5) alkupiste");
+    /**
+     * Vastustajan pelilaudan päällä ylempänä oleva tekstikenttä
+     */
     private JTextField t21 = new JTextField("Vihollisen laivat");
+    /**
+     * Vastustajan pelilaudan päällä alempana oleva tekstikenttä
+     */
     private JTextField t22 = new JTextField("");
+    /**
+     * Väliaikaisen tiedon tallennukseen
+     */
     private Kuuntelija apukuuntelija;
+    /**
+     * Taulukko kaikista kuuntelijoista
+     */
     private Kuuntelija[] kuuntelijataulu;
+    /**
+     * Jo lisättyjen kuuntelijoiden määrä
+     */
     private int annetutKuuntelijat;
 
+    /**
+     * Konstruktori alustaa tietorakenteet, luo pelin ja luo käyttöliittymän
+     */
     public Laivanupotus() {
         kuuntelijataulu = new Kuuntelija[200];
         annetutKuuntelijat = 0;
@@ -116,6 +161,7 @@ public class Laivanupotus extends JFrame {
                     }
                 });
 
+
         JPanel t1 = new JPanel(new GridLayout(2, 1));
         t1.add(t11);
         t1.add(t12);
@@ -134,12 +180,25 @@ public class Laivanupotus extends JFrame {
         p22.add(p12);
         p22.add("South", lopeta);
 
-        this.setLayout(new GridLayout(1, 2));
+        this.setLayout(new GridLayout(1,2,10,10));
         this.add(p21);
         this.add(p22);
+        
+        this.setTitle("Laivanupotus");
+        this.pack();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(1000, 500);
+        this.setMinimumSize(new Dimension(1000, 500));
+//        this.setVisible(true);
 
     }
 
+    /**
+     * Merkkaa upottetun vihollisen laivan #-merkeillä ja poistaa viereiset
+     * ruudut näkyvistä
+     *
+     * @param laiva
+     */
     public void merkkaaUponneeksi(Laiva laiva) {
         for (Ruutu ruutu : laiva.getRuudut()) {
             vastustajan[10 * ruutu.gety() + ruutu.getx()].setText("#");
@@ -151,26 +210,35 @@ public class Laivanupotus extends JFrame {
         }
     }
 
-    public static void main(String args[]) {
-        Laivanupotus ikkuna = new Laivanupotus();
-        ikkuna.setTitle("Laivanupotus");
-        ikkuna.pack();
-        ikkuna.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ikkuna.setSize(1000, 500);
-        ikkuna.setMinimumSize(new Dimension(1000, 500));
-        ikkuna.setVisible(true);
-    }
+    /**
+     * Tekee käyttöliittymän näkyväksi
+     *
+     * @param args ei tarvittavia parameterja
+     */
 
+    /**
+     * asettaa pelaajanpuoleisen alemman tekstikentän
+     *
+     * @param teksti asetettava teksti
+     */
     public void asetaOmaTeksti(String teksti) {
         t12.setText(teksti);
 
     }
 
+    /**
+     * asettaa vastustajan puoleisen alemman tekstikentän
+     *
+     * @param teksti asetettava teksti
+     */
     public void asetaVastuksenTeksti(String teksti) {
         t22.setText(teksti);
 
     }
 
+    /**
+     * Piirtää molemmat pelilaudat laivoineen (testailun apumetodi)
+     */
     public void naytaLaivat() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -181,6 +249,10 @@ public class Laivanupotus extends JFrame {
         }
     }
 
+    /**
+     * Aloittaa pelin alusta, eli kaikki ruudut nollautuvat ja peli alkaa alusta
+     * laivojen asettelulla.
+     */
     public void aloitaAlusta() {
         t12.setText("Aseta laivan (5) alkupiste");
         t22.setText("");

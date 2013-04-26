@@ -1,19 +1,27 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package kayttoliittyma;
 
 import javax.swing.JButton;
 
-
+/**
+ * Nappi on JButtonia laajentava luokka. Nappi tuntee oman sijaintinsa pelilaudalla
+ * @author teempitk
+ */
 public class Nappi extends JButton {
+    /**
+     * Napin x-koordinaatti
+     */
     private int xkoord;
+    /**
+     * Napin y-koordinaatti
+     */
     private int ykoord;
-    private JButton nappula;
-    
+    /**
+     * ajaa yliluokan konstruktorin
+     * @param text 
+     */
     public Nappi(String text){
-        nappula=new JButton(text);
+        super();
     }
     
     public int getx(){

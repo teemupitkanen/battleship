@@ -17,3 +17,5 @@ Pe 12.4.    3,5h  Koodikatselmointi 1 (n. 1,5h), Javadocin kirjoittelua lopuille
 Ti 16.4.    2h    Koodin refaktorointia. Loogiset osuudet irrotettu käyttöliittymän Laivanupotus-luokasta. Metodeja jaettu pienempiin. Testit korjattu toimiviksi. Javadocin täydennys peli-luokan osalta.
 To 18.4.    2,5h  Lisätty nappulat pelin lopettamiseen ja resetointiin sekäperuskäyttöliittymään, että voittoilmoitus-popuppiin. Koodikatselmointi 2 (1h)
 Ti 23.4.    2h    Demoaminen & pientä viilausta käyttöliittymään (lopetus- ja resetointinapit siirretty pelialutojen alle)
+To 25.4.    5h    Dokumentointia. Tiedostoon tilastojen tallentaminen ja luku lisätty. Parannettu vastustajan tekoälyä (ei ammu enää paikkoihin mihin lyhin upottamaton laiva ei mahdu)
+Pe 26.4.    2h    Dokumentointia (Javadoc käyttöliittymäluokkiin, luokkakaavio, rakennekuvaus...)

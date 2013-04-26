@@ -214,38 +214,29 @@ public class Tietokonevastustaja {
      * @return ammuttavan pisteen koordinaatit
      */
     public int[] osumanJalkeenArvaaSuunta() {
-        System.out.println("arvataan suuntaa");
         while (true) {
             int suunta = (int) (4 * Math.random()); // 0=N, 1=E, 2=S, 3=W
             if (suunta == 0 && miny - 1 >= 0) {
                 if (kohdelauta[miny - 1][minx] == 0) {
                     int[] palautettava = {minx, miny - 1};
-                    System.out.println("Suunta: " + suunta);
-                    System.out.println("palauttaa:" + minx + "," + (miny - 1));
                     return palautettava;
                 }
             }
             if (suunta == 1 && minx + 1 <= 9) {
                 if (kohdelauta[miny][minx + 1] == 0) {
                     int[] palautettava = {minx + 1, miny};
-                    System.out.println("Suunta: " + suunta);
-                    System.out.println("palauttaa:" + (minx + 1) + "," + miny);
                     return palautettava;
                 }
             }
             if (suunta == 2 && miny + 1 <= 9) {
                 if (kohdelauta[miny + 1][minx] == 0) {
                     int[] palautettava = {minx, miny + 1};
-                    System.out.println("Suunta: " + suunta);
-                    System.out.println("palauttaa:" + minx + "," + (miny + 1));
                     return palautettava;
                 }
             }
             if (suunta == 3 && minx - 1 >= 0) {
                 if (kohdelauta[miny][minx - 1] == 0) {
                     int[] palautettava = {minx - 1, miny};
-                    System.out.println("Suunta: " + suunta);
-                    System.out.println("palauttaa:" + (minx - 1) + "," + miny);
                     return palautettava;
                 }
             }
@@ -336,7 +327,6 @@ public class Tietokonevastustaja {
 
 
             if (!suuntaTiedossa && (minx != maxx || miny != maxy)) {
-                System.out.println("suunta tiedossa");
                 suuntaTiedossa = true;
 
                 if (minx < maxx) {
@@ -352,9 +342,8 @@ public class Tietokonevastustaja {
             upotusKesken = false;
             suuntaTiedossa = false;
             merkkaaUppoaminenKohdelautaan();
-            int upotetunPituus = (maxx - minx + maxy - miny + 2); // Tässä kohtaa jokin mennee pieleen
+            int upotetunPituus = (maxx - minx + maxy - miny + 2); 
             lisaaUponneisiin(upotetunPituus);
-            System.out.println("Pituus:" + upotetunPituus);
             minx = 9;
             maxx = 0;
             miny = 9;
@@ -370,9 +359,6 @@ public class Tietokonevastustaja {
      */
     private void lisaaUponneisiin(int pituus) {
         switch (pituus) {
-            case (1):
-                System.out.println("virhe1");
-                break;
             case (2):
                 laiva2uponnut = true;
                 break;
@@ -388,9 +374,6 @@ public class Tietokonevastustaja {
                 break;
             case (5):
                 laiva5uponnut = true;
-                break;
-            case (6):
-                System.out.println("virhe6");
                 break;
         }
         if (laiva2uponnut) {
