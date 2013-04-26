@@ -1,1 +1,1 @@
-Älä lue
+HUOM! Koodissa on nyt tallennustiedoston osoite suhteessa jar-tiedostoon! Koodi siis ei välttämättä toimi netbeansissa ilman, että polun korjaa. Peli-luokan haeJaPaivitaStatistiikat()-metodiin täytyy tällöin vaihtaa File("laivanupotus/savefile.txt") muotoon ("savefile.txt").
