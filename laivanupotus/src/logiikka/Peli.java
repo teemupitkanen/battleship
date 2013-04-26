@@ -455,7 +455,7 @@ public class Peli {
      * @return voittoprosentti, keskimääräinen loppunmisvuoro
      */
     public double[] haeJaPaivitaStatistiikat(String tulos, int vuoro){
-        File file= new File("savefile.txt");
+        File file= new File("laivanupotus/savefile.txt");
         ArrayList<Integer> tulokset = new ArrayList();
         ArrayList<Integer> vuorot = new ArrayList();
         Scanner skanneri = null;
